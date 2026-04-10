@@ -119,7 +119,7 @@ export default function App() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2 }}
-        className="relative h-screen w-full flex items-center justify-center overflow-hidden pt-32 sm:pt-40 lg:pt-48"
+        className="relative h-screen w-full flex items-center justify-center overflow-hidden pt-20 sm:pt-24 lg:pt-28"
       >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
