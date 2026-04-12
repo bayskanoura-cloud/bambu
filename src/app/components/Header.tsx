@@ -1,214 +1,149 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X } from 'lucide-react';
-import logo from 'figma:asset/44083d477defdf9b384af0c1b5613c21e2a2f687.png';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, Calendar } from 'lucide-react';
+import logo from 'figma:asset/logo_transparent.png';
 
 interface HeaderProps {
   onBookingClick?: () => void;
 }
 
 const navigationItems = [
-  { label: 'Home', href: '#home' },
-  { label: 'Services', href: '#services' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'HOME', href: '#home' },
+  { label: 'SERVICES', href: '#services' },
+  { label: 'GALLERY', href: '#gallery' },
+  { label: 'ABOUT', href: '#about' },
+  { label: 'CONTACT', href: '#contact' },
 ];
 
 export default function Header({ onBookingClick }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState('Home');
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [activeLink, setActiveLink] = useState('HOME');
+  const [showLogo, setShowLogo] = useState(true);
 
-  // Detect scroll direction and position for show/hide behavior
+  // Gestion de la visibilité du logo au scroll
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Show/hide based on scroll direction
-      if (currentScrollY < lastScrollY) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
-      } else if (currentScrollY <= 100) {
-        setIsVisible(true);
+      if (window.scrollY > 50) {
+        setShowLogo(false); // Cache le logo quand on descend
+      } else {
+        setShowLogo(true); // Affiche le logo quand on est en haut
       }
-
-      setIsScrolled(currentScrollY > 30);
-      setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   const handleNavClick = (label: string, href: string) => {
     setActiveLink(label);
     setIsMenuOpen(false);
-    
-    if (href.startsWith('#')) {
-      const element = document.getElementById(href.slice(1));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
-
-  const handleBookingClick = () => {
-    setIsMenuOpen(false);
-    onBookingClick?.();
+    const element = document.getElementById(href.slice(1));
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ 
-        y: isVisible ? 0 : -100,
-        opacity: isVisible ? 1 : 0
-      }}
-      transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-black/60 backdrop-blur-xl border-b border-white/15 shadow-xl'
-          : 'bg-black/30 backdrop-blur-md border-b border-white/5'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24 gap-4">
-          
-          {/* Logo - Optimized Size & Alignment */}
+    <>
+      {/* --- LOGO AVEC DISPARITION AU SCROLL --- */}
+      <AnimatePresence>
+        {showLogo && (
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex-shrink-0 group cursor-pointer"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20, transition: { duration: 0.3 } }}
+            transition={{ duration: 0.8 }}
+            className="fixed top-6 left-6 z-[60]"
           >
-            <div className="relative">
-              {/* Subtle glow on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/5 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              {/* Logo Container - Minimal & elegant */}
-              <div className="relative p-1.5 sm:p-2 rounded-lg bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-300">
-                <img
-                  src={logo}
-                  alt="Bambu Beauty - Premium Nail Salon Dubai"
-                  className="h-12 sm:h-14 lg:h-16 w-auto object-contain drop-shadow-lg filter brightness-110 group-hover:brightness-125 transition-all duration-300"
-                />
-              </div>
+            <div className="relative group">
+              <img
+                src={logo}
+                alt="Bambu Beauty"
+                className="h-32 md:h-40 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
+                style={{ 
+                  mixBlendMode: 'multiply',
+                  filter: 'contrast(1.1)' 
+                }}
+              />
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
 
-          {/* Desktop Navigation - Centered */}
-          <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
-            {navigationItems.map((item) => (
-              <motion.button
-                key={item.label}
-                onClick={() => handleNavClick(item.label, item.href)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`relative px-4 py-2 font-medium text-xs uppercase tracking-wider transition-all duration-200 rounded-lg ${
-                  activeLink === item.label
-                    ? 'text-white'
-                    : 'text-white/65 hover:text-white hover:bg-white/8'
-                }`}
-              >
-                <span className="relative z-10">{item.label}</span>
-                
-                {/* Active indicator - bottom accent line */}
-                {activeLink === item.label && (
-                  <motion.div
-                    layoutId="activeIndicator"
-                    className="absolute bottom-0 left-4 right-4 h-1 bg-gradient-to-r from-rose-400 to-red-500 rounded-full"
-                    transition={{ duration: 0.3 }}
-                  />
-                )}
-              </motion.button>
-            ))}
-          </nav>
+      {/* --- MENU HAMBURGER (TOUJOURS VISIBLE) --- */}
+      <motion.button
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="fixed top-8 right-6 z-[60] h-12 w-12 flex items-center justify-center bg-black/20 backdrop-blur-xl rounded-full border border-white/10 shadow-xl"
+      >
+        {isMenuOpen ? (
+          <X className="w-5 h-5 text-white" />
+        ) : (
+          <Menu className="w-5 h-5 text-white" />
+        )}
+      </motion.button>
 
-          {/* Right Side - CTA & Mobile Menu */}
-          <div className="flex items-center gap-2 sm:gap-4">
-            
-            {/* Desktop CTA Button */}
-            {/* <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleBookingClick}
-              className="hidden lg:block px-6 py-2 bg-gradient-to-r from-rose-400 to-red-500 hover:from-rose-500 hover:to-red-600 text-white rounded-full font-semibold text-xs uppercase tracking-wide transition-all duration-300 shadow-lg hover:shadow-xl border border-rose-300/30 drop-shadow-lg whitespace-nowrap"
-            >
-              Book Now
-            </motion.button> */}
-
-            {/* Mobile Menu Button - Premium Style */}
-            <motion.button
-              whileTap={{ scale: 0.88 }}
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`md:hidden p-2.5 rounded-lg transition-all duration-300 ${
-                isMenuOpen
-                  ? 'bg-white/15 text-white'
-                  : 'bg-white/5 text-white/80 hover:bg-white/10 hover:text-white'
-              }`}
-              aria-label="Toggle menu"
-            >
-              <motion.div
-                animate={{ rotate: isMenuOpen ? 90 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                {isMenuOpen ? (
-                  <X className="w-5 h-5" />
-                ) : (
-                  <Menu className="w-5 h-5" />
-                )}
-              </motion.div>
-            </motion.button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation - Modern Dropdown */}
-        <AnimatePresence>
-          {isMenuOpen && (
+      {/* --- DRAWER MENU WITH GLASSMORPHISM --- */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
             <motion.div
-              initial={{ opacity: 0, height: 0, y: -10 }}
-              animate={{ opacity: 1, height: 'auto', y: 0 }}
-              exit={{ opacity: 0, height: 0, y: -10 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="md:hidden overflow-hidden border-t border-white/10"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMenuOpen(false)}
+              className="fixed inset-0 bg-black/30 backdrop-blur-lg z-40"
+            />
+
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-[85%] md:w-[400px] bg-white/10 backdrop-blur-xl border-l border-white/20 z-50 flex flex-col p-10 pt-32 shadow-2xl"
             >
-              <nav className="px-3 py-4 space-y-1 bg-gradient-to-b from-white/5 to-transparent backdrop-blur-sm">
+              <nav className="flex flex-col space-y-10">
                 {navigationItems.map((item, index) => (
                   <motion.button
                     key={item.label}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    transition={{ delay: index * 0.1 }}
                     onClick={() => handleNavClick(item.label, item.href)}
-                    className={`w-full text-left px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 ${
-                      activeLink === item.label
-                        ? 'bg-gradient-to-r from-rose-400/30 to-red-500/20 text-white border border-rose-400/40'
-                        : 'text-white/75 hover:text-white hover:bg-white/8 border border-transparent'
-                    }`}
+                    className="group text-left flex items-baseline space-x-4"
                   >
-                    {item.label}
+                    <span className="text-[10px] font-bold text-[#D4AF37] tracking-tighter uppercase">
+                      0{index + 1}
+                    </span>
+                    <span className={`text-2xl tracking-[0.25em] font-light transition-all ${
+                      activeLink === item.label ? 'text-[#F0EFEF] translate-x-2' : 'text-[#A1A1A1] hover:text-[#F0EFEF]'
+                    }`}>
+                      {item.label}
+                    </span>
                   </motion.button>
                 ))}
-
-                {/* Mobile CTA Button */}
-                {/* <motion.button
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: navigationItems.length * 0.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={handleBookingClick}
-                  className="w-full mt-3 px-4 py-3 bg-gradient-to-r from-rose-400 to-red-500 hover:from-rose-500 hover:to-red-600 text-white rounded-lg font-semibold text-sm uppercase tracking-wide transition-all duration-300 shadow-lg hover:shadow-xl border border-rose-300/30"
-                >
-                  Book Now
-                </motion.button> */}
               </nav>
+
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                onClick={() => { onBookingClick?.(); setIsMenuOpen(false); }}
+                className="mt-auto mb-10 w-full py-4 bg-[#BE2025] hover:bg-[#D4242A] text-white text-xs font-bold tracking-[0.3em] uppercase rounded-sm flex items-center justify-center space-x-2 active:scale-95 transition-all duration-300"
+                style={{
+                  boxShadow: '0 0 20px rgba(190, 32, 37, 0.4), 0 4px 20px rgba(190, 32, 37, 0.3)'
+                }}
+              >
+                <Calendar className="w-4 h-4" />
+                <span>RÉSERVER</span>
+              </motion.button>
+
+              <div className="border-t border-white/10 pt-6 text-[#A1A1A1] text-[10px] tracking-[0.2em] uppercase">
+                <p className="text-[#D4AF37] font-semibold mb-2">Contact</p>
+                <p>Dubai • Jumeirah</p>
+              </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.header>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
