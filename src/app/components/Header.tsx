@@ -122,7 +122,7 @@ export default function Header({ onBookingClick }: HeaderProps) {
                 ))}
               </nav>
 
-              <motion.button
+              {/* <motion.button
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
@@ -134,12 +134,11 @@ export default function Header({ onBookingClick }: HeaderProps) {
               >
                 <Calendar className="w-4 h-4" />
                 <span>RÉSERVER</span>
-              </motion.button>
+              </motion.button> */}
 
-              <div className="border-t border-white/10 pt-6 text-[#A1A1A1] text-[10px] tracking-[0.2em] uppercase">
-                <p className="text-[#D4AF37] font-semibold mb-2">Contact</p>
-                <p>Dubai • Jumeirah</p>
-              </div>
+              {/* <div className="border-t border-white/10 pt-6 text-[#A1A1A1] text-[10px] tracking-[0.2em] uppercase">
+                <p className="text-[#D4AF37] font-semibold mb-2"></p>
+              </div> */}
             </motion.div>
           </>
         )}
