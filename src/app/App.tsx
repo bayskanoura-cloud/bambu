@@ -272,6 +272,47 @@ export default function App() {
     </div>
   </div>
 </section>
+ <section id="gallery" className="py-32 px-6 bg-[#F0EFEF]">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="text-center mb-24"
+          >
+            <h2 className="text-5xl md:text-6xl font-bold text-[#0F0F0F] mb-4">Our Creations</h2>
+            <div className="h-1 w-24 bg-gradient-to-r from-[#D4AF37] to-transparent mx-auto mb-6" />
+            <p className="text-xl text-[#A1A1A1]">Explore our Hair, Lash and Nail portfolio</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+            {galleryImages.map((image, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -10 }}
+                className="relative overflow-hidden rounded-2xl shadow-xl cursor-pointer group h-80"
+              >
+                <img
+                  src={image.url}
+                  alt={image.alt}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center" />
+                <div className="absolute inset-0 flex items-center justify-center p-8 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                  <p className="text-white text-2xl font-light tracking-[0.2em] uppercase border-b border-white/40 pb-2">
+                    {image.alt}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
       {/* Testimonials Section */}
       <section className="py-32 px-6 bg-[#0F0F0F]">
         <div className="max-w-6xl mx-auto">
