@@ -98,13 +98,18 @@ export default function App() {
             A premium nail spa experience in Dubai
           </motion.p>
 
-          <motion.button
-            whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(212, 175, 55, 0.4)' }} whileTap={{ scale: 0.98 }}
-            onClick={handleBooking}
-            className="px-10 py-4 bg-gradient-to-r from-[#D4AF37] to-[#B8860B] text-white rounded-full font-bold text-lg shadow-2xl transition-all"
-          >
-            Book now
-          </motion.button>
+         <motion.button
+  whileHover={{ 
+    scale: 1.05, 
+    backgroundColor: "rgba(212, 175, 55, 0.1)", // Un léger voile doré au survol
+    boxShadow: '0 0 30px rgba(212, 175, 55, 0.2)' 
+  }} 
+  whileTap={{ scale: 0.98 }}
+  onClick={handleBooking}
+  className="px-10 py-4 bg-transparent border-2 border-[#D4AF37] text-[#D4AF37] rounded-full font-bold text-lg transition-all"
+>
+  Book now
+</motion.button>
         </div>
 
         <motion.div
@@ -347,13 +352,18 @@ export default function App() {
         <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready for a makeover?</h2>
           <p className="text-xl text-white/80 mb-8">Treat yourself to an exceptional experience at Bambu Beauty</p>
-          <motion.button
-            whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(212, 175, 55, 0.4)' }} whileTap={{ scale: 0.98 }}
-            onClick={handleBooking}
-            className="px-10 py-4 bg-gradient-to-r from-[#D4AF37] to-[#B8860B] text-white rounded-full font-bold text-lg shadow-2xl transition-all"
-          >
-            Book now
-          </motion.button>
+         <motion.button
+  whileHover={{ 
+    scale: 1.05, 
+    backgroundColor: "rgba(212, 175, 55, 0.1)", // Un léger voile doré au survol
+    boxShadow: '0 0 30px rgba(212, 175, 55, 0.2)' 
+  }} 
+  whileTap={{ scale: 0.98 }}
+  onClick={handleBooking}
+  className="px-10 py-4 bg-transparent border-2 border-[#D4AF37] text-[#D4AF37] rounded-full font-bold text-lg transition-all"
+>
+  Book now
+</motion.button>
         </motion.div>
       </section>
       {/* Map Section */}

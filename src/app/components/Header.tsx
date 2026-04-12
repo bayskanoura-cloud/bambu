@@ -54,15 +54,16 @@ export default function Header({ onBookingClick }: HeaderProps) {
             className="fixed top-6 left-6 z-[60]"
           >
             <div className="relative group">
-              <img
-                src={logo}
-                alt="Bambu Beauty"
-                className="h-32 md:h-40 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
-                style={{ 
-                  mixBlendMode: 'multiply',
-                  filter: 'contrast(1.1)' 
-                }}
-              />
+            <img
+  src={logo}
+  alt="Bambu Beauty"
+  className="h-32 md:h-40 w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
+  style={{ 
+    // Supprime mixBlendMode: 'multiply' qui cause le trou
+    filter: 'drop-shadow(0px 4px 10px rgba(0,0,0,0.3)) brightness(1.1)',
+    // Cette ombre portée (drop-shadow) va décoller le logo de la vidéo
+  }}
+/>
             </div>
           </motion.div>
         )}
